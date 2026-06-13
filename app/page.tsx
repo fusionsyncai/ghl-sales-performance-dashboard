@@ -1,65 +1,87 @@
-import Image from "next/image";
+import Link from "next/link";
+import { isGhlConfigured } from "./lib/env";
+import { getSession } from "./lib/ghl/session";
 
-export default function Home() {
+const ERROR_MESSAGES: Record<string, string> = {
+  not_configured: "The GHL app is not configured yet. Add credentials to .env.",
+  access_denied: "Authorization was cancelled.",
+  missing_code: "GHL did not return an authorization code.",
+  invalid_state: "Security check failed. Please try connecting again.",
+  no_location: "No GHL location was returned. Install on a sub-account.",
+  token_exchange: "Could not exchange the authorization code for a token.",
+};
+
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
+  const configured = isGhlConfigured();
+  const session = configured ? await getSession() : null;
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
+    <main className="flex flex-1 flex-col items-center justify-center bg-zinc-50 px-6 py-24 dark:bg-black">
+      <div className="w-full max-w-xl">
+        <p className="mb-3 text-sm font-medium uppercase tracking-widest text-zinc-500">
+          Rep Performance OS
+        </p>
+        <h1 className="text-4xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+          The system that runs your sales floor
+        </h1>
+        <p className="mt-4 text-lg leading-8 text-zinc-600 dark:text-zinc-400">
+          Connect your GoHighLevel location to see who&apos;s making money,
+          who&apos;s overloaded, and where deals get stuck — live. We store
+          nothing; your data is read directly from GHL in your session.
+        </p>
+
+        {error ? (
+          <div className="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-300">
+            {ERROR_MESSAGES[error] ?? "Something went wrong. Please try again."}
+          </div>
+        ) : null}
+
+        <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
+          {session ? (
+            <>
+              <Link
+                href="/dashboard"
+                className="inline-flex h-12 items-center justify-center rounded-full bg-zinc-900 px-6 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+              >
+                Open dashboard
+              </Link>
+              <a
+                href="/api/auth/logout"
+                className="text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200"
+              >
+                Disconnect
+              </a>
+            </>
+          ) : (
             <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              href="/api/auth/ghl"
+              aria-disabled={!configured}
+              className={`inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-medium transition-colors ${
+                configured
+                  ? "bg-zinc-900 text-white hover:bg-zinc-700 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+                  : "pointer-events-none bg-zinc-200 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-600"
+              }`}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+              Connect GoHighLevel
+            </a>
+          )}
+        </div>
+
+        {!configured ? (
+          <p className="mt-6 text-sm text-zinc-500">
+            Set <code className="font-mono">GHL_CLIENT_ID</code>,{" "}
+            <code className="font-mono">GHL_CLIENT_SECRET</code>,{" "}
+            <code className="font-mono">GHL_REDIRECT_URI</code> and{" "}
+            <code className="font-mono">TOKEN_ENCRYPTION_KEY</code> in your{" "}
+            <code className="font-mono">.env</code> to enable connecting.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+        ) : null}
+      </div>
+    </main>
   );
 }

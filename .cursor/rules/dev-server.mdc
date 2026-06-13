@@ -1,0 +1,31 @@
+---
+description: Keep the app built and running on port 3035
+alwaysApply: true
+---
+
+# Run the app on port 3035
+
+The app must stay running on **port 3035** (already configured in `package.json`:
+`dev` and `start` both use `--port 3035`).
+
+## When the server is down
+Build and start it:
+
+```bash
+npm run build && npm run start
+```
+
+## After finishing any code change
+Always rebuild and restart so the running app reflects the latest code:
+
+```bash
+# free the port if something is already bound to it
+lsof -ti:3035 | xargs kill -9 2>/dev/null || true
+npm run build && npm run start
+```
+
+## Notes
+- Use `npm run start` (production) for the persistent instance; use `npm run dev`
+  only for active local iteration.
+- Run the server as a background process so it keeps serving.
+- Quick health check: `curl -s -o /dev/null -w "%{http_code}" http://localhost:3035/`

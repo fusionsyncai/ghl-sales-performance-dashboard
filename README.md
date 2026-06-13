@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rep Performance OS for GHL
 
-## Getting Started
+> **The system that runs the sales floor.** A free, zero-storage tool that turns a
+> GoHighLevel sales team from vibes into operational visibility — who makes money,
+> who drops the ball, who's overloaded, and where deals get stuck — rendered live
+> from the GHL API.
 
-First, run the development server:
+**We store nothing.** Your GHL OAuth token is AES-256-GCM encrypted and kept only in
+an `httpOnly` cookie. All metrics are computed live from GHL's current snapshot.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+See [`docs/PROJECT_PLAN.md`](docs/PROJECT_PLAN.md) for the full scope, architecture,
+metric-computability matrix, and sprint plan.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Next.js 16 (App Router) · React 19 · Tailwind v4 · TypeScript. No database.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Setup
 
-## Learn More
+1. **Create a GHL Marketplace app** at <https://marketplace.gohighlevel.com>.
+   - Add a Redirect URI of `http://localhost:3000/api/auth/callback` (and your prod URL).
+   - Add scopes: `opportunities.readonly`, `users.readonly`, `locations.readonly`.
+   - Copy the Client ID and Client Secret.
+2. **Configure env.** Copy `.env.example` to `.env` and fill in values:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   cp .env.example .env
+   # generate a session secret:
+   openssl rand -base64 48   # → TOKEN_ENCRYPTION_KEY
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Run it.**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   npm install
+   npm run dev
+   ```
 
-## Deploy on Vercel
+   Open <http://localhost:3000>, click **Connect GoHighLevel**, install on a
+   sub-account, and you'll land on the Sprint 0 connection-check dashboard.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Status
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Sprint 0 (done):** GHL OAuth, encrypted cookie session + refresh, paginated API
+  client, connect/disconnect, raw-counts connection check.
+- **Next:** metrics engine, Executive Overview, Rep Intelligence, Aging, Revenue,
+  Alerts (see the project plan).
