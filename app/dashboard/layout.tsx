@@ -20,7 +20,9 @@ export default async function DashboardLayout({
         <AppSidebar />
         <SidebarInset>
           <DashboardHeader locationId={session.locationId} />
-          <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">{children}</div>
+          <div className="flex flex-1 flex-col gap-6 p-4 md:gap-7 md:p-8">
+            {children}
+          </div>
         </SidebarInset>
       </SidebarProvider>
     </TooltipProvider>

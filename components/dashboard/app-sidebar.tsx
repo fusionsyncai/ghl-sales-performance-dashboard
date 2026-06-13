@@ -29,11 +29,13 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" render={<Link href="/dashboard" />}>
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <Activity className="size-4" />
+              <div className="flex aspect-square size-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-sm">
+                <Activity className="size-5" />
               </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">Rep Performance OS</span>
+              <div className="grid flex-1 text-left leading-tight">
+                <span className="truncate font-heading text-sm font-semibold">
+                  Rep Performance OS
+                </span>
                 <span className="truncate text-xs text-muted-foreground">
                   GHL sales floor
                 </span>
@@ -53,6 +55,7 @@ export function AppSidebar() {
                   <SidebarMenuButton
                     isActive={item.href === active.href}
                     tooltip={item.title}
+                    className="h-9 data-active:bg-emerald-500/10 data-active:text-emerald-700 data-active:[&_svg]:text-emerald-600 dark:data-active:text-emerald-300 dark:data-active:[&_svg]:text-emerald-400"
                     render={<Link href={item.href} />}
                   >
                     <item.icon />

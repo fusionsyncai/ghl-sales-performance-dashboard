@@ -66,7 +66,7 @@ export default async function PipelinePage() {
                   </div>
                   <Progress
                     value={(stage.count / maxCount) * 100}
-                    className="h-2"
+                    className="h-2.5 [&_[data-slot=progress-indicator]]:bg-gradient-to-r [&_[data-slot=progress-indicator]]:from-emerald-500 [&_[data-slot=progress-indicator]]:to-teal-500"
                   />
                 </div>
               ))}
