@@ -132,6 +132,73 @@
   --sidebar-ring: oklch(0.7 0.15 156);
 }
 
+/* Aceternity-style background motion for the landing hero. */
+@keyframes aurora-drift {
+  0% {
+    transform: translate3d(-8%, -4%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(8%, 6%, 0) scale(1.15);
+  }
+  100% {
+    transform: translate3d(-8%, -4%, 0) scale(1);
+  }
+}
+
+@keyframes aurora-drift-slow {
+  0% {
+    transform: translate3d(6%, 3%, 0) scale(1.1);
+  }
+  50% {
+    transform: translate3d(-7%, -5%, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(6%, 3%, 0) scale(1.1);
+  }
+}
+
+@keyframes grid-pan {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 48px 48px;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-aurora {
+  animation: aurora-drift 16s ease-in-out infinite;
+}
+.animate-aurora-slow {
+  animation: aurora-drift-slow 22s ease-in-out infinite;
+}
+.animate-grid-pan {
+  animation: grid-pan 6s linear infinite;
+}
+.animate-rise-in {
+  animation: rise-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-aurora,
+  .animate-aurora-slow,
+  .animate-grid-pan,
+  .animate-rise-in {
+    animation: none;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
