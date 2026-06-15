@@ -4,12 +4,12 @@ import {
   Clock,
   Gauge,
   ShieldCheck,
-  Sparkles,
   TrendingUp,
   Users,
 } from "lucide-react";
 
 import { PrivacyInfo } from "@/components/landing/privacy-info";
+import { SiteHeader } from "@/components/site-header";
 import { isGhlConfigured } from "./lib/env";
 import { getSession } from "./lib/ghl/session";
 
@@ -69,43 +69,7 @@ export default async function Home({
       </div>
 
       {/* ── Top nav ────────────────────────────────────────────────── */}
-      <header className="relative flex shrink-0 items-center justify-between px-6 py-5 sm:px-10">
-        {/* Brand */}
-        <Link href="/" className="flex items-center gap-2.5">
-          {/* LOGO SLOT — drop your logo image here manually (e.g. <Image src="/logo.svg" .../>) */}
-          <span className="size-8 shrink-0 rounded-lg" data-logo-slot />
-          <span className="font-heading text-lg font-bold tracking-tight text-foreground">
-            FusionSync{" "}
-            <span className="bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent">
-              AI
-            </span>
-          </span>
-        </Link>
-
-        {/* Actions */}
-        <nav className="flex items-center gap-2 sm:gap-3">
-          <Link
-            href="/blog"
-            className="hidden px-2 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground sm:inline-flex"
-          >
-            Blog
-          </Link>
-
-         
-
-          <Link
-            href="/contact"
-            className="inline-flex h-9 items-center justify-center rounded-full bg-foreground px-5 text-sm font-semibold text-background shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
-          >
-            Book a call
-          </Link>
-        </nav>
-
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-border to-transparent"
-        />
-      </header>
+      <SiteHeader />
 
       {/* ── Hero ───────────────────────────────────────────────────── */}
       <section className="flex flex-1 flex-col items-center justify-center px-6 text-center">
@@ -237,7 +201,7 @@ export default async function Home({
       <footer className="flex shrink-0 items-center justify-center gap-1.5 px-6 py-5 text-xs text-muted-foreground">
         A free{" "}
         <Link
-          href="https://fusionsync.ai"
+          href="https://search.brave.com/search?q=fusionsync+ai"
           target="_blank"
           rel="noopener noreferrer"
           className="font-semibold text-foreground underline-offset-4 transition-colors hover:text-emerald-600 hover:underline"
