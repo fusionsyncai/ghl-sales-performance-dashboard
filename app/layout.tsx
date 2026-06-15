@@ -20,6 +20,9 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.APP_BASE_URL || "http://localhost:3035",
+  ),
   title: "Rep Performance OS for GHL",
   description:
     "Live operational visibility for your GoHighLevel sales team. We store nothing.",
